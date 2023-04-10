@@ -14,6 +14,10 @@ type Lecture {
   duration: Int!
 }
 
+type DeleteLectureResponse {
+  id: String!
+}
+
 type Query {
   fetchLectures: [Lecture!]!
   fetchLecture(lectureId: String!): Lecture!
@@ -21,6 +25,7 @@ type Query {
 
 type Mutation {
   createLecture(createLectureInput: CreateLectureInput!): Lecture!
+  deleteLecture(lectureId: String!, password: String!): DeleteLectureResponse!
 }
 
 input CreateLectureInput {
