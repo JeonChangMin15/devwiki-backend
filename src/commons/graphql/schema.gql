@@ -1,0 +1,35 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Lecture {
+  id: String!
+  writer: String!
+  password: String!
+  title: String!
+  platform: String!
+  url: String!
+  price: Int!
+  description: String!
+  duration: Int!
+}
+
+type Query {
+  fetchLectures: [Lecture!]!
+  fetchLecture(lectureId: String!): Lecture!
+}
+
+type Mutation {
+  createLecture(createLectureInput: CreateLectureInput!): Lecture!
+}
+
+input CreateLectureInput {
+  writer: String!
+  password: String!
+  title: String!
+  url: String
+  description: String!
+  platform: String!
+  price: Int!
+  duration: Int!
+}
