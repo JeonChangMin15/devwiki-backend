@@ -1,7 +1,8 @@
-import { InputType, Field, Int } from '@nestjs/graphql';
+import { InputType, Field, Int, ArgsType } from '@nestjs/graphql';
 import { Min } from 'class-validator';
 
 @InputType()
+@ArgsType()
 export class CreateLectureInput {
   @Field(() => String)
   writer: string;

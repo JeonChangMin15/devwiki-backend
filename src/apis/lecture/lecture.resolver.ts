@@ -3,6 +3,7 @@ import { LectureService } from './lecture.service';
 import { CreateLectureInput } from './dto/createLecture.input';
 import { Lecture } from './entities/lecture.entity';
 import { DeleteLectureResponse } from './dto/deleteLecture.Response';
+import { UpdateLectureInput } from './dto/updateLecture.input';
 
 @Resolver()
 export class LectureResolver {
@@ -20,9 +21,18 @@ export class LectureResolver {
 
   @Mutation(() => Lecture)
   createLecture(
-    @Args('createLectureInput') createLectureInput: CreateLectureInput,
+    @Args('createLectureInput', { type: () => CreateLectureInput })
+    createLectureInput: CreateLectureInput,
   ) {
     return this.lectureService.create({ createLectureInput });
+  }
+
+  @Mutation(() => Lecture)
+  updateLecture(
+    @Args('lectureId') lectureId: string,
+    @Args('updateLectureInput') updateLectureInput: UpdateLectureInput,
+  ) {
+    return this.lectureService.update({ lectureId, updateLectureInput });
   }
 
   @Mutation(() => DeleteLectureResponse)

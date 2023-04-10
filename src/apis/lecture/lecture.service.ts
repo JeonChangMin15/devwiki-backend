@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Lecture } from './entities/lecture.entity';
 import { Repository } from 'typeorm';
+import { CreateLectureInput } from './dto/createLecture.input';
 
 @Injectable()
 export class LectureService {
@@ -28,6 +29,13 @@ export class LectureService {
 
   async create({ createLectureInput }) {
     return await this.lectureRepository.save({ ...createLectureInput });
+  }
+
+  async update({ lectureId, updateLectureInput }) {
+    return await this.lectureRepository.save({
+      id: lectureId,
+      ...updateLectureInput,
+    });
   }
 
   async delete({ lectureId, password }) {

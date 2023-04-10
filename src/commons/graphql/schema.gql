@@ -25,6 +25,7 @@ type Query {
 
 type Mutation {
   createLecture(createLectureInput: CreateLectureInput!): Lecture!
+  updateLecture(lectureId: String!, updateLectureInput: UpdateLectureInput!): Lecture!
   deleteLecture(lectureId: String!, password: String!): DeleteLectureResponse!
 }
 
@@ -37,4 +38,15 @@ input CreateLectureInput {
   platform: String!
   price: Int!
   duration: Int!
+}
+
+input UpdateLectureInput {
+  writer: String
+  password: String
+  title: String
+  url: String
+  description: String
+  platform: String
+  price: Int
+  duration: Int
 }
