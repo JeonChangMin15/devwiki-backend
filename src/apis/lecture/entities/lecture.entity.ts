@@ -1,9 +1,11 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Comment } from 'src/apis/comment/entities/comment.entity';
 import {
   Column,
   Entity,
   PrimaryGeneratedColumn,
   DeleteDateColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity()
@@ -47,4 +49,8 @@ export class Lecture {
 
   @DeleteDateColumn()
   deletedAt: Date;
+
+  @OneToMany(() => Comment, (comment) => comment.lecture, { nullable: true })
+  @Field(() => [Comment], { nullable: true })
+  comments?: Comment[];
 }

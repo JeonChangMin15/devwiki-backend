@@ -2,7 +2,6 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Lecture } from './entities/lecture.entity';
 import { Repository } from 'typeorm';
-import { CreateLectureInput } from './dto/createLecture.input';
 
 @Injectable()
 export class LectureService {
@@ -12,7 +11,9 @@ export class LectureService {
   ) {}
 
   async findAll() {
-    const result = await this.lectureRepository.find();
+    const result = await this.lectureRepository.find({
+      relations: ['comments'],
+    });
 
     return result;
   }
@@ -22,6 +23,7 @@ export class LectureService {
       where: {
         id: lectureId,
       },
+      relations: ['comments'],
     });
 
     return result;

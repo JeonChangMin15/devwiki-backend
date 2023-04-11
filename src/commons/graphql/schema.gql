@@ -12,6 +12,16 @@ type Lecture {
   price: Int!
   description: String!
   duration: Int!
+  comments: [Comment!]
+}
+
+type Comment {
+  id: String!
+  writer: String!
+  password: String!
+  description: String!
+  rating: Int!
+  lecture: Lecture!
 }
 
 type DeleteLectureResponse {
@@ -21,12 +31,14 @@ type DeleteLectureResponse {
 type Query {
   fetchLectures: [Lecture!]!
   fetchLecture(lectureId: String!): Lecture!
+  fetchComments(lectureId: String!): [Comment!]!
 }
 
 type Mutation {
   createLecture(createLectureInput: CreateLectureInput!): Lecture!
   updateLecture(lectureId: String!, updateLectureInput: UpdateLectureInput!): Lecture!
   deleteLecture(lectureId: String!, password: String!): DeleteLectureResponse!
+  createComment(lectureId: String!, commentInput: CommentInput!): Comment!
 }
 
 input CreateLectureInput {
@@ -49,4 +61,11 @@ input UpdateLectureInput {
   platform: String
   price: Int
   duration: Int
+}
+
+input CommentInput {
+  writer: String!
+  password: String!
+  description: String!
+  rating: Int!
 }
