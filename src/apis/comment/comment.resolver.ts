@@ -1,3 +1,4 @@
+import * as bcrypt from 'bcrypt';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CommentService } from './comment.service';
 import { CommentInput } from './dto/comment.input';
@@ -14,11 +15,16 @@ export class CommentResolver {
   }
 
   @Mutation(() => Comment)
-  createComment(
+  async createComment(
     @Args('lectureId') lectureId: string,
     @Args('commentInput') commentInput: CommentInput,
   ) {
-    return this.commentService.create({ lectureId, commentInput });
+    const hashedPassword = await bcrypt.hash(commentInput.password, 10);
+    return this.commentService.create({
+      lectureId,
+      commentInput,
+      hashedPassword,
+    });
   }
 
   @Mutation(() => DeleteLectureResponse)

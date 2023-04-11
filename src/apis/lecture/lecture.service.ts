@@ -1,3 +1,4 @@
+import * as bcrypt from 'bcrypt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Lecture } from './entities/lecture.entity';
@@ -29,8 +30,8 @@ export class LectureService {
     return result;
   }
 
-  async create({ createLectureInput }) {
-    return await this.lectureRepository.save({ ...createLectureInput });
+  async create({ password, ...rest }) {
+    return await this.lectureRepository.save({ password, ...rest });
   }
 
   async update({ lectureId, updateLectureInput }) {
@@ -46,8 +47,9 @@ export class LectureService {
         id: lectureId,
       },
     });
+    const isValidPassword = await bcrypt.compare(password, lecture.password);
 
-    if (lecture.password !== password)
+    if (!isValidPassword)
       throw new UnauthorizedException('잘못된 비밀번호를 입력했습니다');
 
     const result = await this.lectureRepository.softDelete({ id: lectureId });

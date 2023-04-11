@@ -1,3 +1,4 @@
+import * as bcrypt from 'bcrypt';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { LectureService } from './lecture.service';
 import { CreateLectureInput } from './dto/createLecture.input';
@@ -20,11 +21,15 @@ export class LectureResolver {
   }
 
   @Mutation(() => Lecture)
-  createLecture(
+  async createLecture(
     @Args('createLectureInput', { type: () => CreateLectureInput })
     createLectureInput: CreateLectureInput,
   ) {
-    return this.lectureService.create({ createLectureInput });
+    const hashedPassword = await bcrypt.hash(createLectureInput.password, 10);
+    return this.lectureService.create({
+      ...createLectureInput,
+      password: hashedPassword,
+    });
   }
 
   @Mutation(() => Lecture)
