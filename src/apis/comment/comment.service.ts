@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Comment } from './entities/comment.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -28,5 +28,20 @@ export class CommentService {
     });
 
     return result;
+  }
+
+  async delete({ commentId, password }) {
+    const comment = await this.commentRepository.findOne({
+      where: {
+        id: commentId,
+      },
+    });
+
+    if (comment.password !== password)
+      throw new UnauthorizedException('잘못된 비밀번호를 입력했습니다');
+
+    const result = await this.commentRepository.softDelete({ id: commentId });
+
+    return { id: commentId };
   }
 }

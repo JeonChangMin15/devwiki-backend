@@ -1,12 +1,18 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Max, Min } from 'class-validator';
 import { Lecture } from 'src/apis/lecture/entities/lecture.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  DeleteDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @ObjectType()
 @Entity()
 export class Comment {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   @Field(() => String)
   id: string;
 
@@ -27,6 +33,9 @@ export class Comment {
   @Column()
   @Field(() => Int)
   rating: number;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 
   @ManyToOne(() => Lecture, (lecture) => lecture.comments)
   @Field(() => Lecture)
