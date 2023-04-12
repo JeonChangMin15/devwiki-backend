@@ -1,6 +1,7 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Comment } from 'src/apis/comment/entities/comment.entity';
 import { LectureTag } from 'src/apis/lectureTags/entities/lecturetag.entity';
+import { MainCategory } from 'src/apis/mainCategory/entities/mainCategory.entity';
 import {
   Column,
   Entity,
@@ -9,6 +10,7 @@ import {
   OneToMany,
   ManyToMany,
   JoinTable,
+  ManyToOne,
 } from 'typeorm';
 
 @Entity()
@@ -63,4 +65,8 @@ export class Lecture {
   @JoinTable()
   @Field(() => [LectureTag], { nullable: true })
   tags?: LectureTag[];
+
+  @ManyToOne(() => MainCategory, (mainCategory) => mainCategory.lecture)
+  @Field(() => MainCategory)
+  mainCategory: MainCategory;
 }

@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Lecture } from './entities/lecture.entity';
 import { In, Repository } from 'typeorm';
 import { LectureTag } from '../lectureTags/entities/lecturetag.entity';
+import { MainCategoryService } from '../mainCategory/mainCategory.service';
 
 @Injectable()
 export class LectureService {
@@ -12,11 +13,12 @@ export class LectureService {
     private lectureRepository: Repository<Lecture>,
     @InjectRepository(LectureTag)
     private tagRepository: Repository<LectureTag>,
+    private readonly mainCategoryService: MainCategoryService,
   ) {}
 
   async findAll() {
     const result = await this.lectureRepository.find({
-      relations: ['comments', 'tags'],
+      relations: ['comments', 'tags', 'mainCategory'],
     });
 
     return result;
@@ -27,13 +29,13 @@ export class LectureService {
       where: {
         id: lectureId,
       },
-      relations: ['comments', 'tags'],
+      relations: ['comments', 'tags', 'mainCategory'],
     });
 
     return result;
   }
 
-  async create({ password, tags, ...rest }) {
+  async create({ password, tags, mainCategory, ...rest }) {
     const existingTags = await this.tagRepository.find({
       where: {
         name: In(tags),
@@ -49,10 +51,17 @@ export class LectureService {
 
     const tagArr = [...existingTags, ...createdTags];
 
+    const existedMainCategory =
+      await this.mainCategoryService.checkMainCategory(mainCategory);
+
     return await this.lectureRepository.save({
       password,
       ...rest,
       tags: tagArr,
+      mainCategory: {
+        id: existedMainCategory.id,
+        name: existedMainCategory.name,
+      },
     });
   }
 

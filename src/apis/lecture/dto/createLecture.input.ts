@@ -32,4 +32,7 @@ export class CreateLectureInput {
 
   @Field(() => [String], { nullable: true })
   tags?: string[];
+
+  @Field(() => String)
+  mainCategory: string;
 }
