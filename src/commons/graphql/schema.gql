@@ -47,6 +47,7 @@ type Query {
   fetchLecture(lectureId: String!): Lecture!
   fetchComments(lectureId: String!): [Comment!]!
   fetchMainCategory: String!
+  fetchTag: String!
 }
 
 type Mutation {

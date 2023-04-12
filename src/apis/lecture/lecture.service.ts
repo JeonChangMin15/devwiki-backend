@@ -2,18 +2,17 @@ import * as bcrypt from 'bcrypt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Lecture } from './entities/lecture.entity';
-import { In, Repository } from 'typeorm';
-import { LectureTag } from '../lectureTags/entities/lecturetag.entity';
+import { Repository } from 'typeorm';
 import { MainCategoryService } from '../mainCategory/mainCategory.service';
+import { LectureTagService } from '../lectureTags/lectureTag.service';
 
 @Injectable()
 export class LectureService {
   constructor(
     @InjectRepository(Lecture)
     private lectureRepository: Repository<Lecture>,
-    @InjectRepository(LectureTag)
-    private tagRepository: Repository<LectureTag>,
     private readonly mainCategoryService: MainCategoryService,
+    private readonly tagService: LectureTagService,
   ) {}
 
   async findAll() {
@@ -36,23 +35,10 @@ export class LectureService {
   }
 
   async create({ password, tags, mainCategory, ...rest }) {
-    const existingTags = await this.tagRepository.find({
-      where: {
-        name: In(tags),
-      },
-    });
-
-    const existingTagNames = existingTags.map((tag) => tag.name);
-    const newTags = tags.filter((tag) => !existingTagNames.includes(tag));
-
-    const createdTags = await Promise.all(
-      newTags.map((tag) => this.tagRepository.save({ name: tag })),
-    );
-
-    const tagArr = [...existingTags, ...createdTags];
-
     const existedMainCategory =
       await this.mainCategoryService.checkMainCategory(mainCategory);
+
+    const tagArr = await this.tagService.findAllTags(tags);
 
     return await this.lectureRepository.save({
       password,

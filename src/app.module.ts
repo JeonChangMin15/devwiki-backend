@@ -5,12 +5,14 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { CommentModule } from './apis/comment/comment.module';
 import { LectureModule } from './apis/lecture/lecture.module';
 import { MainCategoryModule } from './apis/mainCategory/mainCategory.module';
+import { LectureTagModule } from './apis/lectureTags/lectureTag.module';
 
 @Module({
   imports: [
     LectureModule,
     CommentModule,
     MainCategoryModule,
+    LectureTagModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: 'src/commons/graphql/schema.gql',
