@@ -1,11 +1,14 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Comment } from 'src/apis/comment/entities/comment.entity';
+import { LectureTag } from 'src/apis/lectureTags/entities/lecturetag.entity';
 import {
   Column,
   Entity,
   PrimaryGeneratedColumn,
   DeleteDateColumn,
   OneToMany,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 
 @Entity()
@@ -53,4 +56,11 @@ export class Lecture {
   @OneToMany(() => Comment, (comment) => comment.lecture, { nullable: true })
   @Field(() => [Comment], { nullable: true })
   comments?: Comment[];
+
+  @ManyToMany(() => LectureTag, (lectureTag) => lectureTag.lecture, {
+    nullable: true,
+  })
+  @JoinTable()
+  @Field(() => [LectureTag], { nullable: true })
+  tags?: LectureTag[];
 }

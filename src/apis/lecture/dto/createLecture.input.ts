@@ -29,4 +29,7 @@ export class CreateLectureInput {
   @Min(0)
   @Field(() => Int)
   duration: number;
+
+  @Field(() => [String], { nullable: true })
+  tags?: string[];
 }

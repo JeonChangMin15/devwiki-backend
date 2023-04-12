@@ -2,6 +2,12 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type LectureTag {
+  id: String!
+  name: String!
+  lecture: [Lecture!]!
+}
+
 type Lecture {
   id: String!
   writer: String!
@@ -13,6 +19,7 @@ type Lecture {
   description: String!
   duration: Int!
   comments: [Comment!]
+  tags: [LectureTag!]
 }
 
 type Comment {
@@ -51,6 +58,7 @@ input CreateLectureInput {
   platform: String!
   price: Int!
   duration: Int!
+  tags: [String!]
 }
 
 input UpdateLectureInput {
@@ -62,6 +70,7 @@ input UpdateLectureInput {
   platform: String
   price: Int
   duration: Int
+  tags: [String!]
 }
 
 input CommentInput {
