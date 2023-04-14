@@ -28,6 +28,7 @@ export class LectureResolver {
     const hashedPassword = await bcrypt.hash(createLectureInput.password, 10);
     return this.lectureService.create({
       mainCategory: createLectureInput.mainCategory,
+      subCategory: createLectureInput.subCategory,
       tags: createLectureInput.tags,
       ...createLectureInput,
       password: hashedPassword,

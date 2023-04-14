@@ -35,4 +35,7 @@ export class CreateLectureInput {
 
   @Field(() => String)
   mainCategory: string;
+
+  @Field(() => String)
+  subCategory: string;
 }

@@ -11,6 +11,13 @@ type LectureTag {
 type MainCategory {
   id: String!
   name: String!
+  subCategory: [SubCategory!]!
+}
+
+type SubCategory {
+  id: String!
+  name: String!
+  mainCategory: MainCategory!
   lecture: [Lecture!]!
 }
 
@@ -26,7 +33,7 @@ type Lecture {
   duration: Int!
   comments: [Comment!]
   tags: [LectureTag!]
-  mainCategory: MainCategory!
+  subCategory: SubCategory!
 }
 
 type Comment {
@@ -47,6 +54,7 @@ type Query {
   fetchLecture(lectureId: String!): Lecture!
   fetchComments(lectureId: String!): [Comment!]!
   fetchMainCategory: String!
+  fetchSubCategory: String!
   fetchTag: String!
 }
 
@@ -57,6 +65,7 @@ type Mutation {
   createComment(lectureId: String!, commentInput: CommentInput!): Comment!
   deleteComment(commentId: String!, password: String!): DeleteLectureResponse!
   createMainCategory(mainCategory: String!): MainCategory!
+  createSubCategory(subCategory: String!, mainCategory: String!): SubCategory!
 }
 
 input CreateLectureInput {
@@ -70,6 +79,7 @@ input CreateLectureInput {
   duration: Int!
   tags: [String!]
   mainCategory: String!
+  subCategory: String!
 }
 
 input UpdateLectureInput {
@@ -83,6 +93,7 @@ input UpdateLectureInput {
   duration: Int
   tags: [String!]
   mainCategory: String
+  subCategory: String
 }
 
 input CommentInput {

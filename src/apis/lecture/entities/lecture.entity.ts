@@ -1,7 +1,7 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Comment } from 'src/apis/comment/entities/comment.entity';
 import { LectureTag } from 'src/apis/lectureTags/entities/lecturetag.entity';
-import { MainCategory } from 'src/apis/mainCategory/entities/mainCategory.entity';
+import { SubCategory } from 'src/apis/subCategory/entities/subCategory.entity';
 import {
   Column,
   Entity,
@@ -66,7 +66,7 @@ export class Lecture {
   @Field(() => [LectureTag], { nullable: true })
   tags?: LectureTag[];
 
-  @ManyToOne(() => MainCategory, (mainCategory) => mainCategory.lecture)
-  @Field(() => MainCategory)
-  mainCategory: MainCategory;
+  @ManyToOne(() => SubCategory, (subCategory) => subCategory.lecture)
+  @Field(() => SubCategory)
+  subCategory: SubCategory;
 }

@@ -5,6 +5,7 @@ import { Lecture } from './entities/lecture.entity';
 import { Repository } from 'typeorm';
 import { MainCategoryService } from '../mainCategory/mainCategory.service';
 import { LectureTagService } from '../lectureTags/lectureTag.service';
+import { SubCategoryService } from '../subCategory/subCategory.service';
 
 @Injectable()
 export class LectureService {
@@ -13,11 +14,17 @@ export class LectureService {
     private lectureRepository: Repository<Lecture>,
     private readonly mainCategoryService: MainCategoryService,
     private readonly tagService: LectureTagService,
+    private readonly subCategoryService: SubCategoryService,
   ) {}
 
   async findAll() {
     const result = await this.lectureRepository.find({
-      relations: ['comments', 'tags', 'mainCategory'],
+      relations: [
+        'comments',
+        'tags',
+        'subCategory',
+        'subCategory.mainCategory',
+      ],
     });
 
     return result;
@@ -28,15 +35,24 @@ export class LectureService {
       where: {
         id: lectureId,
       },
-      relations: ['comments', 'tags', 'mainCategory'],
+      relations: [
+        'comments',
+        'tags',
+        'subCategory',
+        'subCategory.mainCategory',
+      ],
     });
 
     return result;
   }
 
-  async create({ password, tags, mainCategory, ...rest }) {
+  async create({ password, tags, mainCategory, subCategory, ...rest }) {
     const existedMainCategory =
       await this.mainCategoryService.checkMainCategory(mainCategory);
+
+    const exiestedSubCategory = await this.subCategoryService.checkSubCategory(
+      subCategory,
+    );
 
     const tagArr = await this.tagService.findAllTags(tags);
 
@@ -44,10 +60,13 @@ export class LectureService {
       password,
       ...rest,
       tags: tagArr,
-      mainCategory: {
-        id: existedMainCategory.id,
-        name: existedMainCategory.name,
-        // 여기에다가 join한 subCategory를 넣어주면 될거같은데 join하는건 mainCategory 앤티티에다가 작업을 해주면 될거같다....
+      subCategory: {
+        id: exiestedSubCategory.id,
+        name: exiestedSubCategory.name,
+        mainCategory: {
+          id: existedMainCategory.id,
+          name: existedMainCategory.name,
+        },
       },
     });
   }

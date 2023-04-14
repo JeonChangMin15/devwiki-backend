@@ -12,7 +12,10 @@ export class SubCategoryResolver {
   }
 
   @Mutation(() => SubCategory)
-  createSubCategory(@Args('subCategory') subCategory: string) {
-    return this.subCategoryService.create({ subCategory });
+  createSubCategory(
+    @Args('subCategory') subCategory: string,
+    @Args('mainCategory') mainCategory: string,
+  ) {
+    return this.subCategoryService.create({ subCategory, mainCategory });
   }
 }

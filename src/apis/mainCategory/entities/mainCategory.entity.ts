@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Lecture } from 'src/apis/lecture/entities/lecture.entity';
+import { SubCategory } from 'src/apis/subCategory/entities/subCategory.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
@@ -13,7 +13,7 @@ export class MainCategory {
   @Field(() => String)
   name: string;
 
-  @OneToMany(() => Lecture, (lecture) => lecture.mainCategory)
-  @Field(() => [Lecture])
-  lecture: Lecture[];
+  @OneToMany(() => SubCategory, (subCategory) => subCategory.mainCategory)
+  @Field(() => [SubCategory])
+  subCategory: SubCategory[];
 }
