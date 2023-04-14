@@ -6,12 +6,14 @@ import { CommentModule } from './apis/comment/comment.module';
 import { LectureModule } from './apis/lecture/lecture.module';
 import { MainCategoryModule } from './apis/mainCategory/mainCategory.module';
 import { LectureTagModule } from './apis/lectureTags/lectureTag.module';
+import { SubCategoryModule } from './apis/subCategory/subCategory.module';
 
 @Module({
   imports: [
     LectureModule,
     CommentModule,
     MainCategoryModule,
+    SubCategoryModule,
     LectureTagModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,

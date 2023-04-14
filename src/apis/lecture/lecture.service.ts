@@ -47,6 +47,7 @@ export class LectureService {
       mainCategory: {
         id: existedMainCategory.id,
         name: existedMainCategory.name,
+        // 여기에다가 join한 subCategory를 넣어주면 될거같은데 join하는건 mainCategory 앤티티에다가 작업을 해주면 될거같다....
       },
     });
   }
