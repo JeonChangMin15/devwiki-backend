@@ -31,6 +31,7 @@ type Lecture {
   price: Int!
   description: String!
   duration: Int!
+  averageRating: Float!
   comments: [Comment!]
   tags: [LectureTag!]
   subCategory: SubCategory!
@@ -63,7 +64,7 @@ type Mutation {
   updateLecture(lectureId: String!, updateLectureInput: UpdateLectureInput!): Lecture!
   deleteLecture(lectureId: String!, password: String!): DeleteLectureResponse!
   createComment(lectureId: String!, commentInput: CommentInput!): Comment!
-  deleteComment(commentId: String!, password: String!): DeleteLectureResponse!
+  deleteComment(commentId: String!, password: String!, lectureId: String!): DeleteLectureResponse!
   createMainCategory(mainCategory: String!): MainCategory!
   createSubCategory(subCategory: String!, mainCategory: String!): SubCategory!
 }

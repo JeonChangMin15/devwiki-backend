@@ -1,4 +1,4 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
 import { Comment } from 'src/apis/comment/entities/comment.entity';
 import { LectureTag } from 'src/apis/lectureTags/entities/lecturetag.entity';
 import { SubCategory } from 'src/apis/subCategory/entities/subCategory.entity';
@@ -54,6 +54,10 @@ export class Lecture {
 
   @DeleteDateColumn()
   deletedAt: Date;
+
+  @Column({ default: 0, type: 'float' })
+  @Field(() => Float)
+  averageRating: number;
 
   @OneToMany(() => Comment, (comment) => comment.lecture, { nullable: true })
   @Field(() => [Comment], { nullable: true })

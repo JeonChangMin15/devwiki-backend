@@ -31,7 +31,8 @@ export class CommentResolver {
   deleteComment(
     @Args('commentId') commentId: string,
     @Args('password') password: string,
+    @Args('lectureId') lectureId: string,
   ) {
-    return this.commentService.delete({ commentId, password });
+    return this.commentService.delete({ commentId, password, lectureId });
   }
 }
