@@ -10,6 +10,11 @@ import { UpdateLectureInput } from './dto/updateLecture.input';
 export class LectureResolver {
   constructor(private readonly lectureService: LectureService) {}
 
+  @Query(() => String)
+  mytest() {
+    return 'hello';
+  }
+
   @Query(() => [Lecture])
   fetchLectures() {
     return this.lectureService.findAll();
@@ -18,6 +23,11 @@ export class LectureResolver {
   @Query(() => Lecture)
   fetchLecture(@Args('lectureId') lectureId: string) {
     return this.lectureService.findOne({ lectureId });
+  }
+
+  @Query(() => [Lecture])
+  fetchTopThreeLectures() {
+    return this.lectureService.findTopThree();
   }
 
   @Mutation(() => Lecture)

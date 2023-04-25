@@ -46,6 +46,30 @@ export class LectureService {
     return result;
   }
 
+  async findTopThree() {
+    const categories = ['frontend', 'backend', 'cs'];
+    const topThree = await Promise.all(
+      categories.map((category) =>
+        this.lectureRepository.find({
+          where: {
+            subCategory: {
+              mainCategory: {
+                name: category,
+              },
+            },
+          },
+          relations: ['tags', 'subCategory', 'subCategory.mainCategory'],
+          take: 3,
+          order: {
+            averageRating: 'DESC',
+          },
+        }),
+      ),
+    );
+
+    return topThree.flat();
+  }
+
   async create({ password, tags, mainCategory, subCategory, ...rest }) {
     const existedMainCategory =
       await this.mainCategoryService.checkMainCategory(mainCategory);

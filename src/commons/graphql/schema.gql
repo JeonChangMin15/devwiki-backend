@@ -51,8 +51,10 @@ type DeleteLectureResponse {
 }
 
 type Query {
+  mytest: String!
   fetchLectures: [Lecture!]!
   fetchLecture(lectureId: String!): Lecture!
+  fetchTopThreeLectures: [Lecture!]!
   fetchComments(lectureId: String!): [Comment!]!
   fetchMainCategory: String!
   fetchSubCategory: String!
