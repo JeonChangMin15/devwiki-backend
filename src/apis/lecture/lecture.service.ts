@@ -17,17 +17,33 @@ export class LectureService {
     private readonly subCategoryService: SubCategoryService,
   ) {}
 
-  async findAll() {
-    const result = await this.lectureRepository.find({
-      relations: [
-        'comments',
-        'tags',
-        'subCategory',
-        'subCategory.mainCategory',
-      ],
-    });
+  async findAll({ main, sub }) {
+    if (main === 'all') {
+      return await this.lectureRepository.find();
+    }
 
-    return result;
+    if (sub === 'all') {
+      return await this.lectureRepository.find({
+        where: {
+          subCategory: {
+            mainCategory: {
+              name: main,
+            },
+          },
+        },
+      });
+    }
+
+    return await this.lectureRepository.find({
+      where: {
+        subCategory: {
+          name: sub,
+          mainCategory: {
+            name: main,
+          },
+        },
+      },
+    });
   }
 
   async findOne({ lectureId }) {

@@ -37,8 +37,8 @@ export class Lecture {
   platform: string;
 
   @Column({ nullable: true })
-  @Field(() => String)
-  url: string;
+  @Field(() => String, { nullable: true })
+  url?: string;
 
   @Column()
   @Field(() => Int)

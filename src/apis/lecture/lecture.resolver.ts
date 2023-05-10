@@ -16,8 +16,8 @@ export class LectureResolver {
   }
 
   @Query(() => [Lecture])
-  fetchLectures() {
-    return this.lectureService.findAll();
+  fetchLectures(@Args('main') main: string, @Args('sub') sub: string) {
+    return this.lectureService.findAll({ main, sub });
   }
 
   @Query(() => Lecture)
