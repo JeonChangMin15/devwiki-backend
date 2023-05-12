@@ -5,6 +5,7 @@ import { CreateLectureInput } from './dto/createLecture.input';
 import { Lecture } from './entities/lecture.entity';
 import { DeleteLectureResponse } from './dto/deleteLecture.Response';
 import { UpdateLectureInput } from './dto/updateLecture.input';
+import { LecturePagination } from './vo/fetchLecture';
 
 @Resolver()
 export class LectureResolver {
@@ -15,9 +16,18 @@ export class LectureResolver {
     return 'hello';
   }
 
-  @Query(() => [Lecture])
-  fetchLectures(@Args('main') main: string, @Args('sub') sub: string) {
-    return this.lectureService.findAll({ main, sub });
+  @Query(() => LecturePagination)
+  async fetchLectures(
+    @Args('main') main: string,
+    @Args('sub') sub: string,
+    @Args('page') page: number,
+  ) {
+    const [result, count] = await this.lectureService.findAll({
+      main,
+      sub,
+      page,
+    });
+    return { count, lists: result };
   }
 
   @Query(() => Lecture)

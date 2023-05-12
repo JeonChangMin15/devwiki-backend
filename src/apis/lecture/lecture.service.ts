@@ -17,13 +17,22 @@ export class LectureService {
     private readonly subCategoryService: SubCategoryService,
   ) {}
 
-  async findAll({ main, sub }) {
+  async findAll({ main, sub, page }) {
+    const limit = 8;
+    const skip = (page - 1) * limit;
+
     if (main === 'all') {
-      return await this.lectureRepository.find();
+      const [result, count] = await this.lectureRepository.findAndCount({
+        skip,
+        take: limit,
+      });
+      return [result, count];
     }
 
     if (sub === 'all') {
-      return await this.lectureRepository.find({
+      const [result, count] = await this.lectureRepository.find({
+        skip,
+        take: limit,
         where: {
           subCategory: {
             mainCategory: {
@@ -32,9 +41,12 @@ export class LectureService {
           },
         },
       });
+      return [result, count];
     }
 
-    return await this.lectureRepository.find({
+    const [result, count] = await this.lectureRepository.findAndCount({
+      skip,
+      take: limit,
       where: {
         subCategory: {
           name: sub,
@@ -44,6 +56,8 @@ export class LectureService {
         },
       },
     });
+
+    return [result, count];
   }
 
   async findOne({ lectureId }) {
