@@ -5,7 +5,7 @@ import { CreateLectureInput } from './dto/createLecture.input';
 import { Lecture } from './entities/lecture.entity';
 import { DeleteLectureResponse } from './dto/deleteLecture.Response';
 import { UpdateLectureInput } from './dto/updateLecture.input';
-import { LecturePagination } from './vo/fetchLecture';
+import { LecturePagination } from './dto/fetchLecture';
 
 @Resolver()
 export class LectureResolver {
