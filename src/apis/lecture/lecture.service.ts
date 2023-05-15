@@ -30,7 +30,7 @@ export class LectureService {
     }
 
     if (sub === 'all') {
-      const [result, count] = await this.lectureRepository.find({
+      const [result, count] = await this.lectureRepository.findAndCount({
         skip,
         take: limit,
         where: {
