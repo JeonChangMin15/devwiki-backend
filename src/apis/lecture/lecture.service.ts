@@ -2,7 +2,7 @@ import * as bcrypt from 'bcrypt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Lecture } from './entities/lecture.entity';
-import { Repository } from 'typeorm';
+import { Repository, MoreThan, Equal } from 'typeorm';
 import { MainCategoryService } from '../mainCategory/mainCategory.service';
 import { LectureTagService } from '../lectureTags/lectureTag.service';
 import { SubCategoryService } from '../subCategory/subCategory.service';
@@ -17,44 +17,30 @@ export class LectureService {
     private readonly subCategoryService: SubCategoryService,
   ) {}
 
-  async findAll({ main, sub, page }) {
+  async findAll({ main, sub, page, cost }) {
     const limit = 8;
     const skip = (page - 1) * limit;
 
-    if (main === 'all') {
-      const [result, count] = await this.lectureRepository.findAndCount({
-        skip,
-        take: limit,
-      });
-      return [result, count];
+    const where = {};
+    if (main !== 'all') {
+      where['subCategory'] = {
+        mainCategory: {
+          name: main,
+        },
+      };
+    }
+    if (sub !== 'all') {
+      where['subCategory']['name'] = sub;
     }
 
-    if (sub === 'all') {
-      const [result, count] = await this.lectureRepository.findAndCount({
-        skip,
-        take: limit,
-        where: {
-          subCategory: {
-            mainCategory: {
-              name: main,
-            },
-          },
-        },
-      });
-      return [result, count];
+    if (cost === 'free' || cost === 'pay') {
+      where['price'] = cost === 'pay' ? MoreThan(0) : Equal(0);
     }
 
     const [result, count] = await this.lectureRepository.findAndCount({
+      where,
       skip,
       take: limit,
-      where: {
-        subCategory: {
-          name: sub,
-          mainCategory: {
-            name: main,
-          },
-        },
-      },
     });
 
     return [result, count];

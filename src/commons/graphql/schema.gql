@@ -57,7 +57,7 @@ type LecturePagination {
 
 type Query {
   mytest: String!
-  fetchLectures(main: String!, sub: String!, page: Float!): LecturePagination!
+  fetchLectures(main: String!, sub: String!, page: Float!, cost: String!): LecturePagination!
   fetchLecture(lectureId: String!): Lecture!
   fetchTopThreeLectures: [Lecture!]!
   fetchComments(lectureId: String!): [Comment!]!

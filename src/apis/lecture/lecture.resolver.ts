@@ -21,11 +21,13 @@ export class LectureResolver {
     @Args('main') main: string,
     @Args('sub') sub: string,
     @Args('page') page: number,
+    @Args('cost') cost: string,
   ) {
     const [result, count] = await this.lectureService.findAll({
       main,
       sub,
       page,
+      cost,
     });
     return { count, lists: result };
   }

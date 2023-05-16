@@ -40,7 +40,7 @@ export class Lecture {
   @Field(() => String, { nullable: true })
   url?: string;
 
-  @Column()
+  @Column({ type: 'int' })
   @Field(() => Int)
   price: number;
 
